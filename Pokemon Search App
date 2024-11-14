@@ -1,0 +1,268 @@
+** start of Html **
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Search App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Search For Your Favorite Pokemon</h1>
+    <div id="search-container">
+        <input id="search-input" required />
+        <button id="search-button">Search</button>
+    </div>
+    <h1 id="pokemon-name"></h1>
+    <p id="pokemon-id"></p>
+    <p id="weight"></p>
+    <p id="height"></p>
+    <p id="types"></p>
+    <p id="hp"></p>
+    <p id="attack"></p>
+    <p id="defense"></p>
+    <p id="special-attack"></p>
+    <p id="special-defense"></p>
+    <p id="speed"></p>
+    <script src="./script.js"></script>
+</body>
+</html>
+
+** end of Html **
+
+** start of Css **
+
+* {
+ margin: 0;
+padding: 0;
+box-sizing:border-box;
+}
+
+
+body {
+font-family: 'Arial', sans-serif;
+background-color: #f0f8ff;
+color: #333;
+display: flex;
+justify-content: center; 
+align-items: center; 
+height: 100vh;
+flex-direction: column;
+position: relative; 
+padding: 20px;
+text-align: center; 
+}
+
+h1 {
+font-size: 2.5rem;
+font-weight: bold;
+color: #2e6a47;
+margin-bottom: 20px;
+}
+
+#pokemon-name {
+font-size: 2rem;
+color: #2e6a47;
+margin-bottom: 20px;
+}
+
+#search-container {
+display: flex;
+align-items: center;
+    justify-content: center;
+margin-bottom: 20px;
+}
+
+input, button {
+padding: 10px;
+margin: 5px;
+font-size: 1rem;
+border-radius: 5px;
+border: 2px solid #ccc;
+outline: none;
+}
+
+input:focus, button:focus {
+border-color: #4caf50;
+}
+
+#search-button {
+background-color: #4caf50;
+color: white;
+cursor: pointer;
+}
+
+#search-button:hover {
+background-color: #45a049;
+}
+
+p {
+font-size: 1rem;
+margin-top: 10px;
+}
+
+#types {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+margin-top: 20px;
+}
+
+#types div {
+background-color: #4caf50;
+color: white;
+margin: 5px;
+padding: 5px 10px;
+border-radius: 20px;
+font-weight: bold;
+}
+
+img {
+max-width: 150px;
+margin-top: 20px;
+border-radius: 10px;
+}
+
+#floating-circle {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+background-color: white;
+border: 5px solid black;
+position: absolute;
+transition: none;
+}
+
+#top-half {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 50%;
+border-radius: 50% 50% 0 0;
+background-color: red;
+}
+
+#button {
+position: absolute;
+top: 50%;
+left: 50%;
+width: 15px;
+height: 15px;
+background-color: white;
+border: 3px solid black;
+border-radius: 50%;
+transform: translate(-50%, -50%);
+}
+
+
+#floating-circle {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+background-color: white;
+border: 5px solid black;
+position: absolute;
+transition: none;
+}
+
+#top-half {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 50%;
+border-radius: 50% 50% 0 0;
+background-color: red;
+z-index: 1;
+}
+
+#button {
+position: absolute;
+top: 50%;
+left: 50%;
+width: 15px;
+height: 15px;
+background-color: white;
+border: 3px solid black;
+border-radius: 50%;
+transform: translate(-50%, -50%);
+z-index: 2;
+}
+
+** end of Css **
+
+** start of Javascript **
+
+const search = document.getElementById("search-input");
+const searchBtn = document.getElementById("search-button");
+
+searchBtn.addEventListener("click", function () {
+    const pokemonQuery = search.value.trim().toLowerCase();
+    if (pokemonQuery === "") {
+        alert("Please enter a Pokémon name or ID");
+        return;
+    }
+    fetchPokemonData(pokemonQuery);
+});
+
+function fetchPokemonData(pokemonQuery) {
+    console.log("Fetching data for:", pokemonQuery);
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonQuery}`)
+        .then(response => {
+            if (!response.ok) {
+                // If the response is not OK, handle it here
+                alert("Pokémon not found");
+                console.error("Response not OK:", response);
+                return; // Stop execution if the response is not OK
+            }
+            return response.json(); // Parse the response if it is OK
+        })
+        .then(data => {
+            // Only execute this if the data was fetched successfully
+            if (data) {
+                console.log("Fetched Pokémon data:", data);
+
+                // Update UI elements with the Pokémon data
+                document.getElementById("pokemon-name").textContent = data.name.toUpperCase(); // e.g., "PIKACHU"
+                document.getElementById("pokemon-id").textContent = `#${data.id}`; // e.g., "#25"
+                document.getElementById("weight").textContent = `Weight: ${data.weight}`; // e.g., "Weight: 60"
+                document.getElementById("height").textContent = `Height: ${data.height}`; // e.g., "Height: 4"
+
+                // Set stats
+                document.getElementById("hp").textContent = `${data.stats[0].base_stat}`;
+                document.getElementById("attack").textContent = `${data.stats[1].base_stat}`;
+                document.getElementById("defense").textContent = `${data.stats[2].base_stat}`;
+                document.getElementById("special-attack").textContent = `${data.stats[3].base_stat}`;
+                document.getElementById("special-defense").textContent = `${data.stats[4].base_stat}`;
+                document.getElementById("speed").textContent = `${data.stats[5].base_stat}`;
+
+                // Clear previous types and set new ones
+                const typesElement = document.getElementById("types");
+                typesElement.innerHTML = ""; // Clear previous types
+                data.types.forEach(typeInfo => {
+                    const typeItem = document.createElement("div");
+                    typeItem.textContent = typeInfo.type.name.toUpperCase(); // Pokémon type
+                    typesElement.appendChild(typeItem);
+                });
+
+                // Handle sprite image
+                let sprite = document.getElementById("sprite");
+                if (!sprite) {
+                    sprite = document.createElement("img");
+                    sprite.id = "sprite";
+                    document.body.appendChild(sprite); // Append sprite image to the body
+                }
+                sprite.src = data.sprites.front_default; // Set the sprite image source
+                sprite.alt = `${data.name} sprite`; // Set alt text
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching Pokémon data:", error);
+            alert("Pokémon not found"); // Catch any network errors and alert
+        });
+}
+
+** end of Javascript **
