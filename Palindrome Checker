@@ -1,0 +1,95 @@
+** start of Html **
+
+<!DOCTYPE html>			
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<link rel='stylesheet' href='styles.css'>
+<title>Palindrome Checker</title>
+</head>
+<p>A palindrome is a word, phrase, or sequence that reads the same backward as forward.</p>
+<header>Is it a Palindrome?</header>
+<body>
+<div id="form">
+<input id="text-input" placeholder="Enter text"></input>
+<button id="check-btn">
+  Check Palindrome
+</button>
+</div>
+<div id="result">
+</div>
+
+<script src="script.js"></script>
+  </body>
+  </html>
+
+** end of Html **
+
+** start of JavaScript **
+
+const textInput = document.getElementById("text-input");
+const checkButton = document.getElementById("check-btn");
+const result = document.getElementById("result");
+
+checkButton.addEventListener("click",() => {
+  const lowerReplaced = textInput.value.toLowerCase().replace(/[^A-Za-z0-9]/g,"")
+
+  if (textInput.value === "") {
+alert("Please input a value")
+  } else if (textInput.value.length === 1) {
+result.innerText = `${textInput.value} is a palindrome`
+  } else if (lowerReplaced === [...lowerReplaced].reverse().join("")) {
+    result.innerText = `${textInput.value} is a palindrome`
+  } else {
+    result.innerText = `${textInput.value} is not a palindrome`
+  }
+});
+
+
+** end of Javascript **
+
+** start of Css **
+
+header {
+text-align: center;
+font-size: 50;
+color: #ececec;
+margin: 0 auto;
+margin-bottom: 60px;
+
+
+}
+body {
+  background-color: #142d4c;
+  padding-left: 25%;
+  padding-right: 25%;
+  }
+  
+#form {
+text-align: center;
+margin-bottom: 40px;
+}
+
+p {
+  text-align: center;
+  margin-top: 250px;
+  margin-bottom: 100px;
+  font-size: 26;
+  background-color: #385170;
+  border-radius: 5px;
+  padding: 10px
+}
+
+#result {
+   text-align: center;
+   font-size: 32;
+   color: white;
+  background-color: #9fd3c7;
+  border-radius: 10px;
+  padding: 10px
+}
+
+** end of Css **
+
